@@ -52,16 +52,27 @@ def get_punctuation_for_date(date):
 if __name__ == '__main__':
     import sys
 
-    if len(sys.argv) == 2:
-        date_of_birth = sys.argv[1]
-    else:
-        date_of_birth = get_random_date_of_birth()
-
+    date_of_birth = get_random_date_of_birth()
     number_of_birth = get_random_number_of_birth()
+
+    if len(sys.argv) == 2:
+        param = sys.argv[1]
+        if '-' in param:
+            date_of_birth, number_of_birth = param.split('-')
+            if len(number_of_birth) == 4:
+                number_of_birth = number_of_birth[:3]
+        else:
+            date_of_birth = param
+        if len(date_of_birth) != 8:
+            raise ValueError('Use yyyymmdd format')
+
     control_digit = get_control_digit(date_of_birth[2:],
                                       number_of_birth)
     punctuation = get_punctuation_for_date(date_of_birth)
 
-    print("".join([date_of_birth, punctuation, number_of_birth, control_digit]))
+    print("".join([date_of_birth,
+                   punctuation,
+                   number_of_birth,
+                   control_digit]))
 
 # vi: set fileencoding=utf-8 :
